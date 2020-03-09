@@ -26,6 +26,24 @@ const schemas = {
     })
   }),
 
+  '/recieps': Joi.object().keys({
+    name: Joi.string(),
+    ingredients: Joi.array().items(
+      Joi.object({
+        name: Joi.string().guid({
+          version: [
+            'uuidv4',
+            'uuidv5'
+          ]
+        }),
+        weight: Joi.number().integer().positive(),
+        photos: Joi.array().items(Joi.string()).optional()
+      })
+    ).min(2),
+    photos: Joi.array().items(Joi.string()).optional(),
+    portions: Joi.alternatives().try(Joi.number(), Joi.string())
+  })
+
 };
 
 exports.check = function (schema, body) {
